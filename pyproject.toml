@@ -1,0 +1,63 @@
+[project]
+name = "prodaxis-platform"
+version = "0.1.0"
+description = "Prodaxis WhatsApp Business Platform - production-grade FastAPI service for sending and receiving WhatsApp messages via Meta Cloud API"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "Prodaxis", email = "tech@prodaxis.in"}
+]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+extend-exclude = ["alembic/versions"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",     # pycodestyle
+    "F",          # pyflakes
+    "I",          # isort
+    "B",          # flake8-bugbear
+    "C4",         # flake8-comprehensions
+    "UP",         # pyupgrade
+    "N",          # pep8-naming
+    "ASYNC",      # flake8-async
+    "S",          # flake8-bandit
+    "RUF",        # Ruff-specific
+]
+ignore = [
+    "S101",  # Use of assert (allowed in tests)
+    "B008",  # Function calls in default argument (FastAPI Depends pattern)
+    "N805",  # First argument should be self (Pydantic validators)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S105", "S106", "S311"]
+"scripts/**" = ["S105", "S106"]
+
+[tool.black]
+line-length = 110
+target-version = ["py311"]
+extend-exclude = "alembic/versions"
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+ignore_missing_imports = true
+disallow_untyped_defs = false
+warn_return_any = false
+warn_unused_ignores = true
+plugins = ["pydantic.mypy"]
+exclude = ["alembic/versions", "tests"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = "-v --tb=short --strict-markers"
+markers = [
+    "integration: integration tests requiring DB/Redis",
+    "unit: unit tests with no external deps",
+]

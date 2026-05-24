@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+logs/
+tests/
+scripts/
+alembic/versions/__pycache__/
+docker-compose.yml
+docker-compose.prod.yml
+Dockerfile
+.env
+.env.*
+.git/

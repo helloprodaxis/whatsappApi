@@ -1,0 +1,44 @@
+services:
+  app:
+    restart: always
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "False"
+      LOG_FORMAT: json
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+    command: >
+      sh -c "alembic upgrade head &&
+             gunicorn src.main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --access-logfile - --error-logfile -"
+
+  worker:
+    restart: always
+    environment:
+      APP_ENV: production
+      LOG_FORMAT: json
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+
+  beat:
+    restart: always
+    environment:
+      APP_ENV: production
+      LOG_FORMAT: json
+
+  postgres:
+    profiles:
+      - never
+
+  redis:
+    profiles:
+      - never
+
+  pgadmin:
+    profiles:
+      - never

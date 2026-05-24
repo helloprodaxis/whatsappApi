@@ -1,0 +1,68 @@
+### Variables
+@baseUrl = http://localhost:8000
+@apiKey = your-api-key-from-env
+@recipientPhone = +919876543210
+
+### Banner
+GET {{baseUrl}}/
+
+### Liveness
+GET {{baseUrl}}/api/v1/health/live
+
+### Health (DB + Redis)
+GET {{baseUrl}}/api/v1/health
+
+### Send a free-form text (only inside 24h customer-care window)
+POST {{baseUrl}}/api/v1/messages/send/text
+Content-Type: application/json
+X-API-Key: {{apiKey}}
+
+{
+  "to": "{{recipientPhone}}",
+  "text": "Hello from Prodaxis test"
+}
+
+### Send the hello_world template
+POST {{baseUrl}}/api/v1/messages/send/template
+Content-Type: application/json
+X-API-Key: {{apiKey}}
+
+{
+  "to": "{{recipientPhone}}",
+  "template_name": "hello_world",
+  "language_code": "en_US"
+}
+
+### List recent messages
+GET {{baseUrl}}/api/v1/messages?page=1&page_size=20
+X-API-Key: {{apiKey}}
+
+### Sync templates from Meta to local DB
+POST {{baseUrl}}/api/v1/templates/sync
+Content-Type: application/json
+X-API-Key: {{apiKey}}
+
+{}
+
+### List local templates
+GET {{baseUrl}}/api/v1/templates
+X-API-Key: {{apiKey}}
+
+### Create a campaign (draft)
+POST {{baseUrl}}/api/v1/campaigns
+Content-Type: application/json
+X-API-Key: {{apiKey}}
+
+{
+  "name": "Test Campaign",
+  "template_name": "hello_world",
+  "language_code": "en_US"
+}
+
+### List campaigns
+GET {{baseUrl}}/api/v1/campaigns
+X-API-Key: {{apiKey}}
+
+### Tenants
+GET {{baseUrl}}/api/v1/tenants
+X-API-Key: {{apiKey}}
