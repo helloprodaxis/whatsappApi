@@ -71,6 +71,10 @@ def setup_logging() -> None:
     logger.remove()
     logger.configure(patcher=_patcher)
 
+    # enqueue=True spawns a multiprocessing.SimpleQueue, which needs /dev/shm
+    # for POSIX semaphores — that's not available on AWS Lambda / Vercel.
+    use_enqueue = not _is_serverless()
+
     if settings.LOG_FORMAT == "json":
         logger.add(
             sys.stdout,
@@ -78,7 +82,7 @@ def setup_logging() -> None:
             serialize=True,
             backtrace=False,
             diagnose=False,
-            enqueue=True,
+            enqueue=use_enqueue,
         )
     else:
         logger.add(
@@ -93,7 +97,7 @@ def setup_logging() -> None:
                 "<cyan>{name}:{function}:{line}</cyan> | "
                 "<level>{message}</level>"
             ),
-            enqueue=True,
+            enqueue=use_enqueue,
         )
 
     if not _is_serverless():
