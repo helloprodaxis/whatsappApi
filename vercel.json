@@ -1,24 +1,11 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/index.py",
-      "use": "@vercel/python",
-      "config": { "maxLambdaSize": "50mb" }
-    }
-  ],
-  "routes": [
-    { "src": "/(.*)", "dest": "api/index.py" }
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/api/index" }
   ],
   "functions": {
     "api/index.py": {
-      "maxDuration": 60
+      "maxDuration": 10
     }
-  },
-  "env": {
-    "VERCEL": "1",
-    "APP_ENV": "production",
-    "LOG_FORMAT": "json"
   }
 }
